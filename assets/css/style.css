@@ -1,0 +1,14 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+.jumbotron {
+    background-color: SaddleBrown; 
+    color: white;
+    font-size: 25pt;
+    
+}
+
+h1 {
+    font-size: 35pt;
+}
