@@ -21,8 +21,8 @@ $("#add-train-btn").on("click", function (event) {
   //global variables 
   var eTrain = $("#train-name-input").val().trim();
   var eDestination = $("#destination-input").val().trim();
-  //var eFirst = moment($("#first-train-input").val().trim(), "HH:mm").format("X");
   var eFirst = $("#first-train-input").val().trim();
+  console.log('eFirst'+ eFirst);
   var eFrequency = $("#frequency-input").val().trim();
 
   var newTrain = {
@@ -42,39 +42,39 @@ $("#add-train-btn").on("click", function (event) {
 });
 
 database.ref().on("child_added", function (childSnapshot) {
-  console.log('childSnapshot>>'+childSnapshot.val());
+  console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<childSnapshot>>'+childSnapshot.val());
 
 
   var train = childSnapshot.val().train;
   var destination = childSnapshot.val().destination;
   var first = childSnapshot.val().first;
-  
-  var frequency =  parseInt(childSnapshot.val().frequency);
-
-console.log("frequency: " + frequency);
-
   console.log('first  ' + first);
+  var frequency =  parseInt(childSnapshot.val().frequency);
+  console.log("frequency: " + frequency);
+
+
 
   //check if correct 
   //minutes vs seconds
   //take the first train and frequency ... calculate when the next bus will arrive based on the current time
-  var firstFormat = moment(first, "HH:mm").subtract(1, "years");
-  console.log("firstFormat: " + firstFormat);
-
-  var firstTrain = moment(firstFormat).format("HH:mm");
-  console.log("first train: " + firstTrain);
+  var firstTrain = moment(first, "HH:mm").subtract(1, "years");
+  console.log(firstTrain);
 
   //take the current time and convert it like efirstformat 
   var currentTime = moment();
   console.log("current: " + moment(currentTime).format("HH:mm"));
 
   //for minutes remaining, we want to take the difference between the first train and the current time
-var timeDiff = moment().diff(moment(firstFormat), "LTS");
-console.log("time diff: " + timeDiff);
-  //need the remainder 
-  //subtract the remainder with the frequency value 
+	var timeDiff = moment().diff(moment(firstTrain), "minutes");
 
-  //add the total to the current time to get the time for the next train
+  console.log("time diff: " + timeDiff);
+    //need the remainder 
+    //subtract the remainder with the frequency value 
+  var remainder = timeDiff%frequency;
+
+  var minutesRemain = frequency - remainder;
+  console.log("how long: " + minutesRemain)
+    //add the total to the current time to get the time for the next train
 
 
   var newRow = $("<tr>").append(
