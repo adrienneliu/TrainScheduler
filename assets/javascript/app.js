@@ -65,22 +65,27 @@ database.ref().on("child_added", function (childSnapshot) {
   console.log("current: " + moment(currentTime).format("HH:mm"));
 
   //for minutes remaining, we want to take the difference between the first train and the current time
-	var timeDiff = moment().diff(moment(firstTrain), "minutes");
+	var difference = moment().diff(moment(firstTrain), "minutes");
 
-  console.log("time diff: " + timeDiff);
+  console.log("time diff: " + difference);
     //need the remainder 
     //subtract the remainder with the frequency value 
-  var remainder = timeDiff%frequency;
+  var remainder = difference%frequency;
 
   var minutesRemain = frequency - remainder;
   console.log("how long: " + minutesRemain)
     //add the total to the current time to get the time for the next train
 
+  var nextTrain = moment().add(minutesRemain, "minutes").format("HH:mm");
+  
+  console.log ("arrive: " + moment(nextTrain).format("HH:mm"));
 
   var newRow = $("<tr>").append(
     $("<td>").text(train),
     $("<td>").text(destination),
-    $("<td>").text(frequency)
+    $("<td>").text(frequency),
+    $("<td>").text(nextTrain),
+    $("<td>").text(minutesRemain)
   )
 
   $("#train-table > tbody").append(newRow);
